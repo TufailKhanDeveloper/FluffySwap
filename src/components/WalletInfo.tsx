@@ -39,7 +39,7 @@ export const WalletInfo: React.FC<WalletInfoProps> = ({ className = '' }) => {
   if (!isConnected) {
     return (
       <motion.div
-        className={`bg-slate-800 rounded-3xl shadow-xl p-6 border border-slate-700 ${className}`}
+        className={`bg-slate-900 rounded-3xl shadow-xl p-6 border border-slate-700 ${className}`}
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
@@ -49,9 +49,9 @@ export const WalletInfo: React.FC<WalletInfoProps> = ({ className = '' }) => {
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <Wallet size={48} className="text-slate-500 mx-auto mb-4" />
+            <Wallet size={48} className="text-slate-400 mx-auto mb-4" />
           </motion.div>
-          <h3 className="text-lg font-semibold text-slate-300 mb-2">
+          <h3 className="text-lg font-semibold text-white mb-2">
             Connect Wallet
           </h3>
           <p className="text-sm text-slate-400">
@@ -64,7 +64,7 @@ export const WalletInfo: React.FC<WalletInfoProps> = ({ className = '' }) => {
 
   return (
     <motion.div
-      className={`bg-slate-800 rounded-3xl shadow-xl p-6 border border-slate-700 ${className}`}
+      className={`bg-slate-900 rounded-3xl shadow-xl p-6 border border-slate-700 ${className}`}
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, delay: 0.4 }}
