@@ -2,13 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Enhanced CSS Custom Properties for Theme Transitions */
+/* Light Theme Only - Simplified CSS */
 :root {
-  /* Theme transition properties */
-  --theme-transition-duration: 300ms;
-  --theme-transition-timing: ease-in-out;
-  
-  /* Light theme colors */
+  /* Light theme colors only */
   --bg-primary: #ffffff;
   --bg-secondary: #f9fafb;
   --bg-tertiary: #f3f4f6;
@@ -18,60 +14,33 @@
   --border-secondary: #e5e7eb;
 }
 
-.dark {
-  /* Dark theme colors */
-  --bg-primary: #111827;
-  --bg-secondary: #1f2937;
-  --bg-tertiary: #374151;
-  --text-primary: #f9fafb;
-  --text-secondary: #e5e7eb;
-  --border-primary: #4b5563;
-  --border-secondary: #6b7280;
-}
-
-/* Global theme transition styles */
-* {
-  transition: background-color var(--theme-transition-duration) var(--theme-transition-timing),
-              border-color var(--theme-transition-duration) var(--theme-transition-timing),
-              color var(--theme-transition-duration) var(--theme-transition-timing);
-}
-
-/* Body and HTML background transitions */
-html {
-  transition: background-color var(--theme-transition-duration) var(--theme-transition-timing);
-}
-
-body {
-  transition: background-color var(--theme-transition-duration) var(--theme-transition-timing);
-  background-color: var(--bg-primary);
-}
-
-/* Enhanced component transitions */
-.theme-transition {
-  transition: all var(--theme-transition-duration) var(--theme-transition-timing);
-}
-
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+  background-color: #ffffff;
 }
 
-/* Custom scrollbar for dark mode */
+body {
+  background-color: #ffffff;
+  color: #111827;
+}
+
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+  background: #f9fafb;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-primary);
+  background: #d1d5db;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--border-secondary);
+  background: #9ca3af;
 }
 
 /* Focus styles for accessibility */
@@ -95,9 +64,19 @@ html {
     --border-primary: #000000;
     --text-primary: #000000;
   }
-  
-  .dark {
-    --border-primary: #ffffff;
-    --text-primary: #ffffff;
-  }
+}
+
+/* Smooth transitions for interactive elements */
+button, a, input, select, textarea {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Ensure consistent light theme */
+.light {
+  color-scheme: light;
+}
+
+/* Remove any dark mode classes that might exist */
+.dark {
+  display: none !important;
 }

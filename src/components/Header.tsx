@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Github, ExternalLink } from 'lucide-react';
 import { WalletConnect } from './WalletConnect';
-import { ThemeToggle } from './ThemeToggle';
 import { FAUCET_LINKS } from '../config/contracts';
 
 export const Header: React.FC = () => {
@@ -49,13 +48,11 @@ export const Header: React.FC = () => {
               <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
                 FluffySwap
               </h1>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Kawaii DEX</p>
+              <p className="text-sm text-gray-600">Kawaii DEX</p>
             </div>
           </motion.div>
 
           <div className="flex items-center gap-4">
-            <ThemeToggle />
-            
             <motion.a
               whileHover={{ 
                 scale: 1.1,
@@ -65,7 +62,7 @@ export const Header: React.FC = () => {
               href={FAUCET_LINKS.sepolia}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium transition-all duration-200 border border-blue-200 dark:border-blue-800"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-full text-sm font-medium transition-all duration-200 border border-blue-200"
             >
               <ExternalLink size={16} />
               Get Testnet ETH
@@ -80,7 +77,7 @@ export const Header: React.FC = () => {
               href="https://github.com/your-repo/fluffyswap"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full transition-all duration-200 border border-gray-200 dark:border-gray-700"
+              className="p-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-all duration-200 border border-gray-200"
             >
               <Github size={20} />
             </motion.a>

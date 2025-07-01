@@ -250,7 +250,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
   return (
     <>
       <motion.div
-        className={`bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 border border-gray-200 dark:border-gray-700 ${className}`}
+        className={`bg-white rounded-3xl shadow-2xl p-8 border border-gray-200 ${className}`}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -258,7 +258,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
         {/* Header */}
         <div className="text-center mb-8">
           <motion.div
-            className="inline-flex items-center gap-3 bg-gradient-to-r from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30 px-6 py-3 rounded-full mb-6 border border-pink-200 dark:border-pink-800"
+            className="inline-flex items-center gap-3 bg-gradient-to-r from-pink-100 to-purple-100 px-6 py-3 rounded-full mb-6 border border-pink-200"
             whileHover={{ scale: 1.02 }}
           >
             <TokenIcon symbol="FLUF" size={24} className="text-pink-500" animated />
@@ -268,10 +268,10 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
             <TokenIcon symbol="ETH" size={24} className="text-blue-500" />
           </motion.div>
           
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Swap ETH for FLUF
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600">
             Trade Ethereum for FluffyTokens instantly
           </p>
         </div>
@@ -283,15 +283,15 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl"
+              className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl"
             >
               <div className="flex items-start gap-3">
                 <AlertTriangle size={20} className="text-red-500 mt-0.5" />
                 <div>
-                  <h4 className="font-semibold text-red-800 dark:text-red-200 mb-1">
+                  <h4 className="font-semibold text-red-800 mb-1">
                     Contract Connection Issues
                   </h4>
-                  <div className="text-sm text-red-600 dark:text-red-300 space-y-1">
+                  <div className="text-sm text-red-600 space-y-1">
                     {isFlufBalanceError && (
                       <p>• Failed to read FLUF balance: {flufBalanceError?.message}</p>
                     )}
@@ -312,13 +312,13 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
         <div className="space-y-6">
           {/* ETH Input */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="block text-sm font-medium text-gray-700">
               You Pay
             </label>
             <div className={`relative rounded-2xl border-2 transition-all duration-300 ${
               inputError 
-                ? 'border-red-300 dark:border-red-600' 
-                : 'border-gray-200 dark:border-gray-600 focus-within:border-pink-300 dark:focus-within:border-pink-500'
+                ? 'border-red-300' 
+                : 'border-gray-200 focus-within:border-pink-300'
             }`}>
               <div className="flex items-center p-4">
                 <div className="flex items-center gap-3 flex-1">
@@ -331,11 +331,11 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
                     onChange={(e) => setEthAmount(e.target.value)}
                     placeholder="0.0"
                     disabled={isLoading}
-                    className="flex-1 text-2xl font-semibold bg-transparent border-none outline-none placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-white"
+                    className="flex-1 text-2xl font-semibold bg-transparent border-none outline-none placeholder-gray-400 text-gray-900"
                     step="0.001"
                     min="0"
                   />
-                  <span className="text-sm font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
+                  <span className="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
                     ETH
                   </span>
                 </div>
@@ -345,7 +345,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
                     whileTap={{ scale: 0.95 }}
                     onClick={handleMaxClick}
                     disabled={isLoading}
-                    className="ml-3 px-3 py-1 text-sm font-medium text-pink-600 dark:text-pink-400 bg-pink-100 dark:bg-pink-900/30 rounded-full hover:bg-pink-200 dark:hover:bg-pink-900/50 transition-colors disabled:opacity-50"
+                    className="ml-3 px-3 py-1 text-sm font-medium text-pink-600 bg-pink-100 rounded-full hover:bg-pink-200 transition-colors disabled:opacity-50"
                   >
                     MAX
                   </motion.button>
@@ -355,11 +355,11 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
             
             {/* Balance and Error */}
             <div className="flex justify-between items-center text-sm">
-              <span className="text-gray-500 dark:text-gray-400">
+              <span className="text-gray-500">
                 {ethBalance ? `Balance: ${parseFloat(formatEther(ethBalance.value)).toFixed(4)} ETH` : ''}
               </span>
               {inputError && (
-                <span className="text-red-500 dark:text-red-400 flex items-center gap-1">
+                <span className="text-red-500 flex items-center gap-1">
                   <AlertTriangle size={14} />
                   {inputError}
                 </span>
@@ -380,10 +380,10 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
 
           {/* FLUF Output */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="block text-sm font-medium text-gray-700">
               You Receive
             </label>
-            <div className="rounded-2xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50">
+            <div className="rounded-2xl border-2 border-gray-200 bg-gray-50">
               <div className="flex items-center p-4">
                 <div className="flex items-center gap-3 flex-1">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-400 to-purple-500 flex items-center justify-center">
@@ -393,15 +393,15 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
                     {isCalculating ? (
                       <div className="flex items-center gap-2">
                         <Loader2 size={20} className="animate-spin text-gray-400" />
-                        <span className="text-gray-400 dark:text-gray-500">Calculating...</span>
+                        <span className="text-gray-400">Calculating...</span>
                       </div>
                     ) : (
-                      <span className="text-2xl font-semibold text-gray-700 dark:text-gray-300">
+                      <span className="text-2xl font-semibold text-gray-700">
                         {flufAmount || '0.0'}
                       </span>
                     )}
                   </div>
-                  <span className="text-sm font-medium text-gray-500 dark:text-gray-400 bg-gray-200 dark:bg-gray-600 px-3 py-1 rounded-full">
+                  <span className="text-sm font-medium text-gray-500 bg-gray-200 px-3 py-1 rounded-full">
                     FLUF
                   </span>
                 </div>
@@ -409,7 +409,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
             </div>
             
             {/* FLUF Balance */}
-            <div className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-sm text-gray-500">
               {isFlufBalanceError ? (
                 'Unable to load FLUF balance'
               ) : flufBalance ? (
@@ -429,7 +429,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
             className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 ${
               canSwap && hasLiquidity
                 ? 'bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white shadow-lg'
-                : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
           >
             {isLoading ? (
@@ -468,7 +468,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
-                className="inline-flex items-center gap-2 text-sm text-pink-600 dark:text-pink-400 hover:text-pink-800 dark:hover:text-pink-300 underline"
+                className="inline-flex items-center gap-2 text-sm text-pink-600 hover:text-pink-800 underline"
               >
                 View Transaction
                 <ArrowDownUp size={14} />
@@ -478,12 +478,12 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className = '' }) 
 
           {/* Swap Info */}
           <div className="text-center space-y-2">
-            <div className="flex items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+            <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
               <span>Min: {SWAP_LIMITS.MIN_ETH} ETH</span>
               <span>•</span>
               <span>Max: {SWAP_LIMITS.MAX_ETH} ETH</span>
             </div>
-            <p className="text-xs text-gray-400 dark:text-gray-500">
+            <p className="text-xs text-gray-400">
               Network fees apply • All transactions are final
             </p>
           </div>
