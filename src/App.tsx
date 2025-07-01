@@ -44,39 +44,40 @@ const AppContent: React.FC = () => {
     overlayBlur: 'small',
   });
 
+  // Define theme-aware gradient configurations
+  const lightGradients = [
+    'linear-gradient(135deg, #fce7f3, #f3e8ff, #e0f2fe)',
+    'linear-gradient(225deg, #fdf2f8, #ede9fe, #cffafe)',
+    'linear-gradient(315deg, #fce7f3, #ddd6fe, #e0f7fa)',
+    'linear-gradient(45deg, #fef7ff, #f0f9ff, #ecfdf5)',
+    'linear-gradient(135deg, #fce7f3, #f3e8ff, #e0f2fe)',
+  ];
+
+  const darkGradients = [
+    'linear-gradient(135deg, #0f172a, #1e1b4b, #1f2937)',
+    'linear-gradient(225deg, #111827, #4c1d95, #155e75)',
+    'linear-gradient(315deg, #1f2937, #5b21b6, #0e7490)',
+    'linear-gradient(45deg, #0f172a, #581c87, #164e63)',
+    'linear-gradient(135deg, #0f172a, #1e1b4b, #1f2937)',
+  ];
+
   return (
     <RainbowKitProvider 
       chains={chains} 
       theme={isDark ? customDarkTheme : customLightTheme}
     >
-      {/* Main App Container with Complete Dark Mode Support */}
-      <div 
-        className="min-h-screen relative overflow-hidden transition-all duration-500 ease-in-out"
-        style={{
-          background: isDark 
-            ? 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 25%, #1f2937 50%, #0f172a 75%, #1e1b4b 100%)'
-            : 'linear-gradient(135deg, #fce7f3 0%, #f3e8ff 25%, #e0f2fe 50%, #fce7f3 75%, #f3e8ff 100%)',
-        }}
-      >
+      {/* Main App Container with Proper Theme-Responsive Background */}
+      <div className={`min-h-screen relative overflow-hidden theme-transition ${isDark ? 'dark' : ''}`}>
+        {/* Theme-responsive static background using CSS classes instead of inline styles */}
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-slate-900 dark:via-indigo-900 dark:to-gray-900 theme-transition" />
+
         {/* Enhanced Multi-Layer Background with Complete Dark Mode Support */}
         <div className="absolute inset-0">
           {/* Animated Base Gradient */}
           <motion.div
-            className="absolute inset-0"
+            className="absolute inset-0 theme-transition"
             animate={{
-              background: isDark ? [
-                'linear-gradient(135deg, #0f172a, #1e1b4b, #1f2937)',
-                'linear-gradient(225deg, #111827, #4c1d95, #155e75)',
-                'linear-gradient(315deg, #1f2937, #5b21b6, #0e7490)',
-                'linear-gradient(45deg, #0f172a, #581c87, #164e63)',
-                'linear-gradient(135deg, #0f172a, #1e1b4b, #1f2937)',
-              ] : [
-                'linear-gradient(135deg, #fce7f3, #f3e8ff, #e0f2fe)',
-                'linear-gradient(225deg, #fdf2f8, #ede9fe, #cffafe)',
-                'linear-gradient(315deg, #fce7f3, #ddd6fe, #e0f7fa)',
-                'linear-gradient(45deg, #fef7ff, #f0f9ff, #ecfdf5)',
-                'linear-gradient(135deg, #fce7f3, #f3e8ff, #e0f2fe)',
-              ]
+              background: isDark ? darkGradients : lightGradients
             }}
             transition={{
               duration: 25,
@@ -87,7 +88,7 @@ const AppContent: React.FC = () => {
 
           {/* Animated Orbs with Theme Awareness */}
           <motion.div
-            className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl"
+            className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl theme-transition"
             style={{
               background: isDark 
                 ? 'radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, rgba(236, 72, 153, 0.05) 50%, transparent 100%)'
@@ -107,7 +108,7 @@ const AppContent: React.FC = () => {
           />
 
           <motion.div
-            className="absolute top-3/4 right-1/4 w-80 h-80 rounded-full blur-3xl"
+            className="absolute top-3/4 right-1/4 w-80 h-80 rounded-full blur-3xl theme-transition"
             style={{
               background: isDark
                 ? 'radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0.06) 50%, transparent 100%)'
@@ -128,7 +129,7 @@ const AppContent: React.FC = () => {
           />
 
           <motion.div
-            className="absolute top-1/2 left-1/2 w-64 h-64 rounded-full blur-2xl"
+            className="absolute top-1/2 left-1/2 w-64 h-64 rounded-full blur-2xl theme-transition"
             style={{
               background: isDark
                 ? 'radial-gradient(circle, rgba(34, 211, 238, 0.12) 0%, rgba(34, 211, 238, 0.04) 50%, transparent 100%)'
@@ -150,25 +151,23 @@ const AppContent: React.FC = () => {
 
           {/* Enhanced Grid Pattern with Theme Support */}
           <div 
-            className="absolute inset-0 transition-opacity duration-500"
+            className="absolute inset-0 theme-transition opacity-30 dark:opacity-20"
             style={{
               backgroundImage: `
                 linear-gradient(${isDark ? 'rgba(168, 85, 247, 0.08)' : 'rgba(168, 85, 247, 0.06)'} 1px, transparent 1px),
                 linear-gradient(90deg, ${isDark ? 'rgba(168, 85, 247, 0.08)' : 'rgba(168, 85, 247, 0.06)'} 1px, transparent 1px)
               `,
               backgroundSize: '80px 80px',
-              opacity: isDark ? 0.3 : 0.4,
             }}
           />
 
           {/* Additional Texture Layer */}
           <div 
-            className="absolute inset-0 transition-opacity duration-500"
+            className="absolute inset-0 theme-transition opacity-60 dark:opacity-40"
             style={{
               background: isDark 
                 ? 'radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.05) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(236, 72, 153, 0.05) 0%, transparent 50%)'
                 : 'radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.08) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(236, 72, 153, 0.08) 0%, transparent 50%)',
-              opacity: isDark ? 0.6 : 0.8,
             }}
           />
         </div>
@@ -207,7 +206,7 @@ const AppContent: React.FC = () => {
         >
           <div className="container mx-auto px-4 text-center">
             <motion.div 
-              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl p-6 max-w-2xl mx-auto border border-white/40 dark:border-gray-700/40 shadow-2xl transition-all duration-500"
+              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl p-6 max-w-2xl mx-auto border border-white/40 dark:border-gray-700/40 shadow-2xl theme-transition"
               whileHover={{
                 scale: 1.02,
                 boxShadow: isDark 
@@ -216,26 +215,26 @@ const AppContent: React.FC = () => {
               }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed transition-colors duration-300">
+              <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed theme-transition">
                 FluffySwap is a kawaii-themed decentralized exchange built for the Ethereum Sepolia testnet.
                 Trade ETH for FLUF tokens with adorable animations and secure smart contracts.
               </p>
-              <div className="flex justify-center gap-6 text-xs text-gray-400 dark:text-gray-500 mb-4 transition-colors duration-300">
+              <div className="flex justify-center gap-6 text-xs text-gray-400 dark:text-gray-500 mb-4 theme-transition">
                 <motion.span 
                   whileHover={{ color: isDark ? '#818cf8' : '#6366f1' }}
-                  className="cursor-default transition-colors duration-200"
+                  className="cursor-default theme-transition"
                 >
                   • Sepolia Testnet Only
                 </motion.span>
                 <motion.span 
                   whileHover={{ color: isDark ? '#a78bfa' : '#8b5cf6' }}
-                  className="cursor-default transition-colors duration-200"
+                  className="cursor-default theme-transition"
                 >
                   • Educational Purpose
                 </motion.span>
                 <motion.span 
                   whileHover={{ color: isDark ? '#22d3ee' : '#06b6d4' }}
-                  className="cursor-default transition-colors duration-200"
+                  className="cursor-default theme-transition"
                 >
                   • Open Source
                 </motion.span>
@@ -243,15 +242,15 @@ const AppContent: React.FC = () => {
               
               {/* Attribution */}
               <motion.div
-                className="pt-4 border-t border-gray-200 dark:border-gray-600 transition-colors duration-300"
+                className="pt-4 border-t border-gray-200 dark:border-gray-600 theme-transition"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2 }}
               >
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-300">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 theme-transition">
                   Made by Huzaifa Khan
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">
+                <p className="text-xs text-gray-500 dark:text-gray-400 theme-transition">
                   Website built by Huzaifa Khan
                 </p>
               </motion.div>
