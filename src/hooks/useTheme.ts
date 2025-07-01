@@ -11,13 +11,15 @@ interface ThemeHook {
 }
 
 /**
- * Custom hook for managing application theme
+ * Enhanced Theme Hook with Complete Dark Mode Support
  * 
  * Features:
  * - Supports light, dark, and system themes
  * - Persists theme preference in localStorage
  * - Automatically detects system theme changes
  * - Provides utility functions for theme management
+ * - Ensures smooth transitions between themes
+ * - Updates document classes and CSS variables
  * 
  * @returns {ThemeHook} Theme state and control functions
  */
@@ -30,10 +32,18 @@ export const useTheme = (): ThemeHook => {
     return 'system';
   });
 
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    return 'light';
+  });
 
   const updateTheme = useCallback(() => {
+    if (typeof window === 'undefined') return;
+
     const root = window.document.documentElement;
+    const body = window.document.body;
     
     let newResolvedTheme: 'light' | 'dark';
     
@@ -45,23 +55,56 @@ export const useTheme = (): ThemeHook => {
     
     setResolvedTheme(newResolvedTheme);
     
-    // Update DOM classes
+    // Update DOM classes for complete theme coverage
     root.classList.remove('light', 'dark');
     root.classList.add(newResolvedTheme);
+    
+    body.classList.remove('light', 'dark');
+    body.classList.add(newResolvedTheme);
     
     // Update meta theme-color for mobile browsers
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', newResolvedTheme === 'dark' ? '#1f2937' : '#ffffff');
+      metaThemeColor.setAttribute('content', newResolvedTheme === 'dark' ? '#111827' : '#ffffff');
     }
 
     // Update CSS custom properties for smooth transitions
-    root.style.setProperty('--theme-transition', 'all 0.3s ease-in-out');
+    root.style.setProperty('--theme-transition-duration', '300ms');
+    root.style.setProperty('--theme-transition-timing', 'ease-in-out');
+    
+    // Set theme-aware CSS variables
+    if (newResolvedTheme === 'dark') {
+      root.style.setProperty('--bg-primary', '#111827');
+      root.style.setProperty('--bg-secondary', '#1f2937');
+      root.style.setProperty('--bg-tertiary', '#374151');
+      root.style.setProperty('--text-primary', '#f9fafb');
+      root.style.setProperty('--text-secondary', '#e5e7eb');
+      root.style.setProperty('--border-primary', '#4b5563');
+      root.style.setProperty('--border-secondary', '#6b7280');
+    } else {
+      root.style.setProperty('--bg-primary', '#ffffff');
+      root.style.setProperty('--bg-secondary', '#f9fafb');
+      root.style.setProperty('--bg-tertiary', '#f3f4f6');
+      root.style.setProperty('--text-primary', '#111827');
+      root.style.setProperty('--text-secondary', '#374151');
+      root.style.setProperty('--border-primary', '#d1d5db');
+      root.style.setProperty('--border-secondary', '#e5e7eb');
+    }
+
+    // Debug logging
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`🎨 Theme updated: ${theme} → ${newResolvedTheme}`);
+    }
   }, [theme]);
 
   const setTheme = useCallback((newTheme: Theme) => {
     setThemeState(newTheme);
     localStorage.setItem('fluffyswap-theme', newTheme);
+    
+    // Debug logging
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`🎨 Theme set: ${newTheme}`);
+    }
   }, []);
 
   const toggleTheme = useCallback(() => {
@@ -78,9 +121,14 @@ export const useTheme = (): ThemeHook => {
 
     // Listen for system theme changes
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = () => {
+    const handleChange = (e: MediaQueryListEvent) => {
       if (theme === 'system') {
         updateTheme();
+      }
+      
+      // Debug logging
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`🌙 System theme changed: ${e.matches ? 'dark' : 'light'}`);
       }
     };
 
@@ -94,6 +142,11 @@ export const useTheme = (): ThemeHook => {
       return () => mediaQuery.removeListener(handleChange);
     }
   }, [theme, updateTheme]);
+
+  // Initialize theme on mount
+  useEffect(() => {
+    updateTheme();
+  }, []);
 
   return {
     theme,

@@ -1,3 +1,103 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Enhanced CSS Custom Properties for Theme Transitions */
+:root {
+  /* Theme transition properties */
+  --theme-transition-duration: 300ms;
+  --theme-transition-timing: ease-in-out;
+  
+  /* Light theme colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --border-primary: #d1d5db;
+  --border-secondary: #e5e7eb;
+}
+
+.dark {
+  /* Dark theme colors */
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+  --text-primary: #f9fafb;
+  --text-secondary: #e5e7eb;
+  --border-primary: #4b5563;
+  --border-secondary: #6b7280;
+}
+
+/* Global theme transition styles */
+* {
+  transition: background-color var(--theme-transition-duration) var(--theme-transition-timing),
+              border-color var(--theme-transition-duration) var(--theme-transition-timing),
+              color var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Body and HTML background transitions */
+html {
+  transition: background-color var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+body {
+  transition: background-color var(--theme-transition-duration) var(--theme-transition-timing);
+  background-color: var(--bg-primary);
+}
+
+/* Enhanced component transitions */
+.theme-transition {
+  transition: all var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for dark mode */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-secondary);
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid #ec4899;
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --border-primary: #000000;
+    --text-primary: #000000;
+  }
+  
+  .dark {
+    --border-primary: #ffffff;
+    --text-primary: #ffffff;
+  }
+}
