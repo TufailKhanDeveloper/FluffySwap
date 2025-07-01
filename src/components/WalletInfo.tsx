@@ -38,12 +38,7 @@ export const WalletInfo: React.FC<WalletInfoProps> = ({ className = '' }) => {
 
   if (!isConnected) {
     return (
-      <motion.div
-        className={`bg-slate-900 rounded-3xl shadow-xl p-6 border border-slate-700 ${className}`}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-      >
+     
         <div className="text-center py-8">
           <motion.div
             animate={{ scale: [1, 1.1, 1] }}
