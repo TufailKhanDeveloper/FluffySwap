@@ -20,6 +20,7 @@ interface ThemeHook {
  * - Provides utility functions for theme management
  * - Ensures smooth transitions between themes
  * - Updates document classes and CSS variables
+ * - Properly handles body and html background transitions
  * 
  * @returns {ThemeHook} Theme state and control functions
  */
@@ -62,6 +63,10 @@ export const useTheme = (): ThemeHook => {
     body.classList.remove('light', 'dark');
     body.classList.add(newResolvedTheme);
     
+    // Ensure proper data attributes for theme targeting
+    root.setAttribute('data-theme', newResolvedTheme);
+    body.setAttribute('data-theme', newResolvedTheme);
+    
     // Update meta theme-color for mobile browsers
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
@@ -81,6 +86,9 @@ export const useTheme = (): ThemeHook => {
       root.style.setProperty('--text-secondary', '#e5e7eb');
       root.style.setProperty('--border-primary', '#4b5563');
       root.style.setProperty('--border-secondary', '#6b7280');
+      
+      // Set body background for consistent theming
+      body.style.backgroundColor = '#111827';
     } else {
       root.style.setProperty('--bg-primary', '#ffffff');
       root.style.setProperty('--bg-secondary', '#f9fafb');
@@ -89,7 +97,18 @@ export const useTheme = (): ThemeHook => {
       root.style.setProperty('--text-secondary', '#374151');
       root.style.setProperty('--border-primary', '#d1d5db');
       root.style.setProperty('--border-secondary', '#e5e7eb');
+      
+      // Set body background for consistent theming
+      body.style.backgroundColor = '#ffffff';
     }
+
+    // Add transition to body for smooth background changes
+    body.style.transition = 'background-color 300ms ease-in-out';
+
+    // Dispatch custom event for components that need to react to theme changes
+    window.dispatchEvent(new CustomEvent('themechange', { 
+      detail: { theme: newResolvedTheme } 
+    }));
 
     // Debug logging
     if (process.env.NODE_ENV === 'development') {
@@ -99,7 +118,11 @@ export const useTheme = (): ThemeHook => {
 
   const setTheme = useCallback((newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem('fluffyswap-theme', newTheme);
+    
+    // Immediate localStorage update
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('fluffyswap-theme', newTheme);
+    }
     
     // Debug logging
     if (process.env.NODE_ENV === 'development') {
@@ -116,10 +139,15 @@ export const useTheme = (): ThemeHook => {
     }
   }, [theme, setTheme]);
 
+  // Initial theme setup effect
   useEffect(() => {
     updateTheme();
+  }, [updateTheme]);
 
-    // Listen for system theme changes
+  // System theme change listener
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e: MediaQueryListEvent) => {
       if (theme === 'system') {
@@ -143,10 +171,10 @@ export const useTheme = (): ThemeHook => {
     }
   }, [theme, updateTheme]);
 
-  // Initialize theme on mount
+  // Theme change effect - triggers when theme state changes
   useEffect(() => {
     updateTheme();
-  }, []);
+  }, [theme, updateTheme]);
 
   return {
     theme,
