@@ -8,9 +8,10 @@ A production-ready, kawaii-themed decentralized exchange (DEX) built for Ethereu
 
 ### 🎨 Frontend
 - **Kawaii Design**: Pastel color palette with floating particle animations
+- **Full Dark Mode**: Complete dark theme support across all components
 - **Responsive UI**: Mobile-first design with smooth micro-interactions
 - **Wallet Integration**: MetaMask + WalletConnect via RainbowKit
-- **Real-time Updates**: Live balance and transaction status
+- **Real-time Updates**: Live balance and transaction status with proper state management
 - **Error Handling**: Comprehensive error boundaries and user feedback
 - **Accessibility**: WCAG compliant with keyboard navigation
 
@@ -26,6 +27,32 @@ A production-ready, kawaii-themed decentralized exchange (DEX) built for Ethereu
 - **Auto-deployment**: Scripts with contract verification
 - **Hot Reload**: Instant development feedback
 - **Error Boundaries**: Graceful error handling in production
+
+## 📋 Recent Updates & Fixes
+
+### Changelog
+
+#### v1.2.0 - Latest Fixes
+- **🔧 Fixed Transaction Alerts**: Resolved pending transaction alert bug that remained on screen indefinitely
+  - Alerts now properly reflect real transaction status (success/failure)
+  - Auto-dismiss functionality with configurable timeouts
+  - Proper cleanup of toast notifications
+  
+- **🌙 Complete Dark Mode**: Implemented full dark mode support
+  - All components now support dark theme
+  - Consistent theming across headers, sidebars, modals, and forms
+  - Smooth theme transitions with system preference detection
+  
+- **💰 Fixed FLUF Token Values**: Corrected token balance and swap calculations
+  - Accurate real-time FLUF balance display
+  - Proper decimal handling (18 decimals)
+  - Fixed swap amount calculations with correct conversion rates
+  - Improved error handling for contract reads
+
+- **🎨 Enhanced UI/UX**: Improved visual consistency and user feedback
+  - Better loading states and error messages
+  - Enhanced transaction status notifications with confetti animations
+  - Improved responsive design for mobile devices
 
 ## 🚀 Quick Start
 
@@ -105,6 +132,39 @@ npm run dev
 - Reentrancy protection
 ```
 
+## 🌙 Dark Mode Implementation
+
+FluffySwap features a comprehensive dark mode system:
+
+- **Theme Provider**: Global theme context with system preference detection
+- **Component Support**: All UI components support both light and dark themes
+- **Smooth Transitions**: Animated theme switching with proper color interpolation
+- **Persistence**: Theme preference saved to localStorage
+- **System Integration**: Automatic theme switching based on OS preference
+
+### Usage
+```typescript
+import { useTheme } from './hooks/useTheme';
+
+const { theme, setTheme, isDark } = useTheme();
+// theme: 'light' | 'dark' | 'system'
+// isDark: boolean (resolved theme)
+```
+
+## 💰 FLUF Token Integration
+
+### Accurate Balance Display
+- Real-time balance updates using wagmi hooks
+- Proper decimal handling (18 decimals)
+- Error handling for contract read failures
+- Automatic balance refresh after transactions
+
+### Swap Calculations
+- Precise ETH to FLUF conversion using current exchange rate
+- Slippage tolerance and liquidity checks
+- Input validation with min/max limits
+- Gas estimation and transaction simulation
+
 ## 🧪 Testing
 
 Run the comprehensive test suite:
@@ -122,12 +182,14 @@ npx hardhat test test/FluffySwap.test.ts
 
 ### Test Coverage
 - ✅ Contract deployment and initialization
-- ✅ Token swapping mechanics
+- ✅ Token swapping mechanics with proper decimal handling
 - ✅ Rate management and validation
 - ✅ Withdrawal functions (ETH + tokens)
 - ✅ Pause/unpause functionality
 - ✅ Error handling and edge cases
 - ✅ Access control and permissions
+- ✅ Transaction state management
+- ✅ Dark mode theme switching
 
 ## 🌐 Deployment
 
@@ -155,17 +217,25 @@ The deployment script will:
 - [ ] Frontend error boundaries tested
 - [ ] Mobile responsiveness verified
 - [ ] Accessibility compliance checked
+- [ ] Dark mode functionality tested
+- [ ] Transaction flow end-to-end tested
 
 ## 🎨 Design System
 
 ### Color Palette
 ```css
-/* Primary kawaii colors */
+/* Light mode */
 --pink-pastel: #FFD1DC
 --mint-green: #B5EAD7  
 --lavender: #C7CEEA
 --soft-pink: #F8BBD9
 --light-purple: #E4C1F9
+
+/* Dark mode */
+--dark-bg: #1f2937
+--dark-surface: #374151
+--dark-border: #4b5563
+--dark-text: #f3f4f6
 ```
 
 ### Typography
@@ -207,6 +277,8 @@ After deployment, addresses are automatically updated in:
 - Write tests for new features
 - Maintain kawaii design consistency
 - Update documentation for changes
+- Test both light and dark modes
+- Ensure proper error handling
 
 ## 📄 License
 
@@ -219,6 +291,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Framer Motion**: Smooth animations
 - **Tailwind CSS**: Utility-first styling
 - **Hardhat**: Ethereum development environment
+
+## 👨‍💻 Attribution
+
+**Made by Huzaifa Khan**  
+Website built by Huzaifa Khan
+
+This project was created with attention to detail, user experience, and modern web development practices. Special focus was given to accessibility, performance, and delightful animations that make DeFi interactions more enjoyable.
 
 ## 🐛 Troubleshooting
 
@@ -238,6 +317,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Verify contract addresses in config
 - Check if contracts are paused
 - Ensure proper network connection
+
+**Dark mode not working**
+- Check if system theme detection is enabled
+- Clear localStorage and refresh
+- Verify theme provider is properly wrapped
+
+**FLUF balance showing incorrectly**
+- Refresh the page to reload contract data
+- Check if wallet is connected to Sepolia
+- Verify contract addresses are correct
 
 ### Support
 

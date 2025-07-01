@@ -10,6 +10,7 @@ interface TransactionStatusProps {
   hash?: string;
   error?: string;
   onClose?: () => void;
+  onStateChange?: (state: TransactionState) => void;
 }
 
 export const TransactionStatus: React.FC<TransactionStatusProps> = ({
@@ -17,10 +18,18 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
   hash,
   error,
   onClose,
+  onStateChange,
 }) => {
   const [showConfetti, setShowConfetti] = useState(false);
+  const [autoCloseTimer, setAutoCloseTimer] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    // Clear any existing timers
+    if (autoCloseTimer) {
+      clearTimeout(autoCloseTimer);
+      setAutoCloseTimer(null);
+    }
+
     if (state === 'success') {
       setShowConfetti(true);
       toast.success('Swap completed successfully! 🎉', {
@@ -36,9 +45,17 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
       
       // Hide confetti after animation
       setTimeout(() => setShowConfetti(false), 3000);
+      
+      // Auto-close success notification after 5 seconds
+      const timer = setTimeout(() => {
+        if (onClose) onClose();
+        if (onStateChange) onStateChange('idle');
+      }, 5000);
+      setAutoCloseTimer(timer);
+      
     } else if (state === 'error') {
       toast.error(error || 'Transaction failed', {
-        duration: 5000,
+        duration: 8000,
         style: {
           background: 'linear-gradient(135deg, #EF4444, #DC2626)',
           color: 'white',
@@ -47,6 +64,14 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
           padding: '16px',
         },
       });
+      
+      // Auto-close error notification after 8 seconds
+      const timer = setTimeout(() => {
+        if (onClose) onClose();
+        if (onStateChange) onStateChange('idle');
+      }, 8000);
+      setAutoCloseTimer(timer);
+      
     } else if (state === 'pending') {
       toast.loading('Transaction pending...', {
         duration: Infinity,
@@ -58,14 +83,32 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
           padding: '16px',
         },
       });
+    } else {
+      // Dismiss all toasts when state is idle
+      toast.dismiss();
     }
 
+    // Cleanup function
     return () => {
       if (state !== 'pending') {
         toast.dismiss();
       }
+      if (autoCloseTimer) {
+        clearTimeout(autoCloseTimer);
+      }
     };
-  }, [state, error]);
+  }, [state, error, onClose, onStateChange]);
+
+  // Manual close handler
+  const handleClose = () => {
+    if (autoCloseTimer) {
+      clearTimeout(autoCloseTimer);
+      setAutoCloseTimer(null);
+    }
+    toast.dismiss();
+    if (onClose) onClose();
+    if (onStateChange) onStateChange('idle');
+  };
 
   if (state === 'idle') return null;
 
@@ -212,19 +255,17 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
               )}
             </div>
 
-            {onClose && (
-              <motion.button
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 }}
-                whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.2)' }}
-                whileTap={{ scale: 0.9 }}
-                onClick={onClose}
-                className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-all duration-200"
-              >
-                <XCircle size={18} />
-              </motion.button>
-            )}
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 }}
+              whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.2)' }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleClose}
+              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-all duration-200"
+            >
+              <XCircle size={18} />
+            </motion.button>
           </div>
 
           {/* Success sparkle effects */}
@@ -251,84 +292,5 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
         </div>
       </motion.div>
     </AnimatePresence>
-  );
-};
-
-// Demo component to showcase the different states
-export const TransactionStatusDemo = () => {
-  const [activeState, setActiveState] = useState<TransactionState>('idle');
-  const [hash] = useState('0x1234567890abcdef1234567890abcdef12345678');
-
-  const states = [
-    { state: 'pending' as const, label: 'Pending' },
-    { state: 'success' as const, label: 'Success' },
-    { state: 'error' as const, label: 'Error' },
-  ];
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Enhanced Transaction Status Alerts
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Modern, user-friendly transaction status notifications with smooth animations
-          </p>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-6">
-            Try Different States
-          </h2>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            {states.map(({ state, label }) => (
-              <button
-                key={state}
-                onClick={() => setActiveState(state)}
-                className={`
-                  px-6 py-3 rounded-xl font-medium transition-all duration-200
-                  ${activeState === state
-                    ? 'bg-blue-500 text-white shadow-lg scale-105'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }
-                `}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex justify-center">
-            <button
-              onClick={() => setActiveState('idle')}
-              className="px-6 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors duration-200"
-            >
-              Clear Alert
-            </button>
-          </div>
-
-          <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-800 mb-2">Features:</h3>
-            <ul className="text-sm text-gray-600 space-y-1">
-              <li>• Smooth entrance and exit animations</li>
-              <li>• Progress bar for pending transactions</li>
-              <li>• Confetti celebration for successful swaps</li>
-              <li>• Better visual hierarchy and typography</li>
-              <li>• Accessible color schemes and contrast</li>
-              <li>• Interactive hover states and micro-animations</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <TransactionStatus
-        state={activeState}
-        hash={activeState !== 'error' ? hash : undefined}
-        error={activeState === 'error' ? 'Insufficient gas fees' : undefined}
-        onClose={() => setActiveState('idle')}
-      />
-    </div>
   );
 };

@@ -104,7 +104,7 @@ const AppContent: React.FC = () => {
 
           {/* Subtle grid pattern */}
           <div 
-            className="absolute inset-0 opacity-5"
+            className="absolute inset-0 opacity-5 dark:opacity-10"
             style={{
               backgroundImage: `
                 linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px),
@@ -140,7 +140,7 @@ const AppContent: React.FC = () => {
           </div>
         </main>
 
-        {/* Enhanced Footer */}
+        {/* Enhanced Footer with Attribution */}
         <motion.footer
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -160,7 +160,7 @@ const AppContent: React.FC = () => {
                 FluffySwap is a kawaii-themed decentralized exchange built for the Ethereum Sepolia testnet.
                 Trade ETH for FLUF tokens with adorable animations and secure smart contracts.
               </p>
-              <div className="flex justify-center gap-6 text-xs text-gray-400 dark:text-gray-500">
+              <div className="flex justify-center gap-6 text-xs text-gray-400 dark:text-gray-500 mb-4">
                 <motion.span 
                   whileHover={{ color: '#6366f1' }}
                   className="cursor-default"
@@ -180,6 +180,21 @@ const AppContent: React.FC = () => {
                   • Open Source
                 </motion.span>
               </div>
+              
+              {/* Attribution */}
+              <motion.div
+                className="pt-4 border-t border-gray-200 dark:border-gray-600"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.2 }}
+              >
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Made by Huzaifa Khan
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Website built by Huzaifa Khan
+                </p>
+              </motion.div>
             </motion.div>
           </div>
         </motion.footer>
