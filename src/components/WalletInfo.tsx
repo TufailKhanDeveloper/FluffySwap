@@ -84,15 +84,15 @@ export const WalletInfo: React.FC<WalletInfoProps> = ({ className = '' }) => {
 
       {/* Balance Cards */}
       <div className="space-y-4">
-        {/* ETH Balance */}
+        {/* ETH Balance - Now using purple/pink colors */}
         <motion.div
-          className="bg-gradient-to-r from-blue-600/20 to-blue-500/20 p-4 rounded-2xl border border-blue-500/30"
+          className="bg-gradient-to-r from-purple-600/20 to-pink-500/20 p-4 rounded-2xl border border-purple-500/30"
           whileHover={{ scale: 1.02, y: -2 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
                 <TokenIcon symbol="ETH" size={16} className="text-white" />
               </div>
               <div>
@@ -109,15 +109,15 @@ export const WalletInfo: React.FC<WalletInfoProps> = ({ className = '' }) => {
           </div>
         </motion.div>
 
-        {/* FLUF Balance */}
+        {/* FLUF Balance - Now using blue colors */}
         <motion.div
-          className="bg-gradient-to-r from-purple-600/20 to-pink-500/20 p-4 rounded-2xl border border-purple-500/30"
+          className="bg-gradient-to-r from-blue-600/20 to-blue-500/20 p-4 rounded-2xl border border-blue-500/30"
           whileHover={{ scale: 1.02, y: -2 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
                 <TokenIcon symbol="FLUF" size={16} className="text-white" />
               </div>
               <div>
