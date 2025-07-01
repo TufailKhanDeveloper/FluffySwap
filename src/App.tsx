@@ -14,7 +14,16 @@ import { FloatingParticles } from './components/FloatingParticles';
 
 import '@rainbow-me/rainbowkit/styles.css';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      cacheTime: 10 * 60 * 1000, // 10 minutes
+    },
+  },
+});
 
 const AppContent: React.FC = () => {
   const { isDark } = useTheme();
@@ -40,18 +49,18 @@ const AppContent: React.FC = () => {
       chains={chains} 
       theme={isDark ? customDarkTheme : customLightTheme}
     >
-      <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-cyan-900/20 transition-colors duration-300">
-        {/* Enhanced Multi-Layer Background */}
+      <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-cyan-900/20 transition-colors duration-500">
+        {/* Enhanced Multi-Layer Background with Dark Mode Support */}
         <div className="absolute inset-0">
-          {/* Base gradient */}
+          {/* Base gradient with proper dark mode */}
           <motion.div
-            className="absolute inset-0 bg-gradient-to-br from-pink-100 via-purple-50 to-cyan-100 dark:from-gray-800 dark:via-purple-900/30 dark:to-cyan-900/30"
+            className="absolute inset-0"
             animate={{
               background: isDark ? [
-                'linear-gradient(135deg, #1f2937, #581c87, #164e63)',
-                'linear-gradient(225deg, #111827, #4c1d95, #155e75)',
+                'linear-gradient(135deg, #111827, #581c87, #164e63)',
+                'linear-gradient(225deg, #0f172a, #4c1d95, #155e75)',
                 'linear-gradient(315deg, #1f2937, #5b21b6, #0e7490)',
-                'linear-gradient(135deg, #1f2937, #581c87, #164e63)',
+                'linear-gradient(135deg, #111827, #581c87, #164e63)',
               ] : [
                 'linear-gradient(135deg, #fce7f3, #f3e8ff, #e0f2fe)',
                 'linear-gradient(225deg, #fdf2f8, #ede9fe, #cffafe)',
@@ -66,11 +75,13 @@ const AppContent: React.FC = () => {
             }}
           />
 
-          {/* Animated orbs */}
+          {/* Animated orbs with dark mode support */}
           <motion.div
-            className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20"
+            className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full"
             style={{
-              background: 'radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, rgba(236, 72, 153, 0.1) 50%, transparent 100%)'
+              background: isDark 
+                ? 'radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, rgba(236, 72, 153, 0.05) 50%, transparent 100%)'
+                : 'radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, rgba(236, 72, 153, 0.1) 50%, transparent 100%)'
             }}
             animate={{
               x: [0, 100, -50, 0],
@@ -85,9 +96,11 @@ const AppContent: React.FC = () => {
           />
 
           <motion.div
-            className="absolute top-3/4 right-1/4 w-80 h-80 rounded-full opacity-15"
+            className="absolute top-3/4 right-1/4 w-80 h-80 rounded-full"
             style={{
-              background: 'radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(168, 85, 247, 0.1) 50%, transparent 100%)'
+              background: isDark
+                ? 'radial-gradient(circle, rgba(168, 85, 247, 0.25) 0%, rgba(168, 85, 247, 0.05) 50%, transparent 100%)'
+                : 'radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(168, 85, 247, 0.1) 50%, transparent 100%)'
             }}
             animate={{
               x: [0, -80, 120, 0],
@@ -102,13 +115,13 @@ const AppContent: React.FC = () => {
             }}
           />
 
-          {/* Subtle grid pattern */}
+          {/* Subtle grid pattern with dark mode */}
           <div 
             className="absolute inset-0 opacity-5 dark:opacity-10"
             style={{
               backgroundImage: `
-                linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px)
+                linear-gradient(${isDark ? 'rgba(168, 85, 247, 0.15)' : 'rgba(168, 85, 247, 0.1)'} 1px, transparent 1px),
+                linear-gradient(90deg, ${isDark ? 'rgba(168, 85, 247, 0.15)' : 'rgba(168, 85, 247, 0.1)'} 1px, transparent 1px)
               `,
               backgroundSize: '60px 60px'
             }}
@@ -140,7 +153,7 @@ const AppContent: React.FC = () => {
           </div>
         </main>
 
-        {/* Enhanced Footer with Attribution */}
+        {/* Enhanced Footer with Attribution and Dark Mode */}
         <motion.footer
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -152,7 +165,9 @@ const AppContent: React.FC = () => {
               className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-2xl p-6 max-w-2xl mx-auto border border-white/30 dark:border-gray-700/30 shadow-xl"
               whileHover={{
                 scale: 1.02,
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.1)'
+                boxShadow: isDark 
+                  ? '0 20px 50px rgba(0, 0, 0, 0.3)'
+                  : '0 20px 50px rgba(0, 0, 0, 0.1)'
               }}
               transition={{ type: "spring", stiffness: 300 }}
             >
@@ -162,19 +177,19 @@ const AppContent: React.FC = () => {
               </p>
               <div className="flex justify-center gap-6 text-xs text-gray-400 dark:text-gray-500 mb-4">
                 <motion.span 
-                  whileHover={{ color: '#6366f1' }}
+                  whileHover={{ color: isDark ? '#818cf8' : '#6366f1' }}
                   className="cursor-default"
                 >
                   • Sepolia Testnet Only
                 </motion.span>
                 <motion.span 
-                  whileHover={{ color: '#8b5cf6' }}
+                  whileHover={{ color: isDark ? '#a78bfa' : '#8b5cf6' }}
                   className="cursor-default"
                 >
                   • Educational Purpose
                 </motion.span>
                 <motion.span 
-                  whileHover={{ color: '#06b6d4' }}
+                  whileHover={{ color: isDark ? '#22d3ee' : '#06b6d4' }}
                   className="cursor-default"
                 >
                   • Open Source
@@ -199,7 +214,7 @@ const AppContent: React.FC = () => {
           </div>
         </motion.footer>
 
-        {/* Enhanced Toast Notifications */}
+        {/* Enhanced Toast Notifications with Dark Mode */}
         <Toaster
           position="top-right"
           toastOptions={{
@@ -211,7 +226,9 @@ const AppContent: React.FC = () => {
               backgroundColor: isDark ? 'rgba(31, 41, 55, 0.9)' : 'rgba(255, 255, 255, 0.9)',
               color: isDark ? '#f3f4f6' : '#374151',
               border: `1px solid ${isDark ? 'rgba(75, 85, 99, 0.3)' : 'rgba(255, 255, 255, 0.3)'}`,
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+              boxShadow: isDark 
+                ? '0 8px 32px rgba(0, 0, 0, 0.3)' 
+                : '0 8px 32px rgba(0, 0, 0, 0.1)',
             },
           }}
         />
@@ -220,6 +237,15 @@ const AppContent: React.FC = () => {
   );
 };
 
+/**
+ * Main App Component
+ * 
+ * Provides the root application structure with:
+ * - Wagmi configuration for Web3 interactions
+ * - React Query for data fetching and caching
+ * - Theme provider for dark/light mode
+ * - Error boundaries for graceful error handling
+ */
 function App() {
   return (
     <WagmiConfig config={wagmiConfig}>
